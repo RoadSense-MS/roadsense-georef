@@ -89,6 +89,11 @@ roadsense-georef/
 │   ├── db.py              # Configuration de la base de données
 │   ├── models.py          # Modèles SQLAlchemy
 │   └── schemas.py         # Schémas Pydantic
+├── exports/                # Module d'export de données
+│   ├── __init__.py
+│   ├── geojson_export.py  # Export des fissures en GeoJSON
+│   └── geojson/           # Fichiers GeoJSON générés
+│       └── fissures.geojson
 ├── .env                    # Variables d'environnement (à créer)
 ├── requirements.txt        # Dépendances Python
 ├── docker-compose.yml      # Configuration Docker
@@ -99,6 +104,38 @@ roadsense-georef/
 
 ### Géoréférencement
 - `GET /georef/` - Récupérer les données de géoréférencement
+
+## Exports de Données
+
+Le module `exports/` permet d'exporter les données des fissures dans différents formats :
+
+### GeoJSON Export
+```bash
+python -m exports.geojson_export
+```
+
+Cela génère un fichier `exports/geojson/fissures.geojson` contenant toutes les fissures georéférencées au format GeoJSON.
+
+**Format GeoJSON :**
+```json
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fissure_001",
+        "severity": "high",
+        "date_detected": "2025-11-26"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[lon, lat], [lon, lat]]
+      }
+    }
+  ]
+}
+```
 
 ## Développement
 
