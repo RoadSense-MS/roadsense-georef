@@ -1,3 +1,4 @@
+from core.georef_logic import compute_fissure_position
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from shapely.geometry import Point
@@ -25,7 +26,13 @@ def georef_defauts(payload: schemas.GeoRefRequest, db: Session = Depends(get_db)
         lon = payload.gps.lon
         lat = payload.gps.lat
 
-        shapely_point = Point(lon, lat)
+        shapely_point = compute_fissure_position(
+    base_lon=payload.gps.lon,
+    base_lat=payload.gps.lat,
+    x=box.x,
+    y=box.y
+)
+
         geom = from_shape(shapely_point, srid=4326)
 
         fissure = models.Fissure(
